@@ -46,6 +46,6 @@ end
 
 
 
-C.hello_builtin_p=hello_builtin
+C.hello_builtin_p=hello_builtin --this dosent hurt, but it still works for me if this is not here
 
 terralib.saveobj("hello.so","sharedlibrary",{ hello_builtin_p = hello_builtin, hello_struct=C.hello_struct }, {})
