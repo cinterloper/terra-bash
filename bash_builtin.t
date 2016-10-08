@@ -21,6 +21,11 @@ local C = terralib.includecstring([[
 #include "shell.h"
 #include "builtins/bashgetopt.h"
 
+#include "luajit-2.0/lua.h"
+#include "luajit-2.0/lauxlib.h"
+#include "luajit-2.0/lualib.h"
+#include "terra/terra.h"
+
 int hello_builtin_p (WORD_LIST*);
 
 char *hello_doc[] = {
@@ -40,33 +45,40 @@ struct builtin hello_struct = {
 };
 
 
-
-
-#include "luajit-2.0/lua.h"
-#include "luajit-2.0/lauxlib.h"
-#include "luajit-2.0/lualib.h"
-#include "terra/terra.h"
-
 ]])
 
+for k, v in pairs(C) do
+  print(k)
+end
+
+local struct LUA {
+  L : &C.lua_State;
+}
+
+local LU = terralib.global(LUA)
+
+terra init_lua()
+  LU.L=C.luaL_newstate()
+  if LU.L == nil then
+    C.printf("can't initialize luajit\n")
+  end
+  C.luaL_openlibs(LU.L)
+  C.terra_init(LU.L)
+
+end
 
 
 terra hello_builtin_p(list : C.WORD_LIST)
-    -- Here we create a new terra instance and execute a code snippet
-  var L = C.luaL_newstate();
-  if L == nil then
-    C.printf("can't initialize luajit\n")
-  end
-  
-  C.luaL_openlibs(L)
-  C.terra_init(L)
-  C.terra_loadstring(L, [[ a = ...; C = terralib.includec("stdio.h"); terra foo () C.printf("new terra %d\n",a) return a end; return foo() ]])
-  C.lua_pushnumber(L,1)
-  C.lua_call(L,1,1)
-  C.luaL_checknumber(L,-1)
-  C.lua_close(L)
+  init_lua()
+  C.terra_loadstring(LU.L, [[ a = ...; C = terralib.includec("stdio.h"); terra foo () C.printf("new terra %d\n",a) return a end; return foo() ]])
+  C.lua_pushnumber(LU.L,1)
+  C.lua_call(LU.L,1,1)
+  C.luaL_checknumber(LU.L,-1)
+  C.lua_close(LU.L)
   C.printf("hello terra/lua!")
   return 0
 end
-terralib.saveobj("hello-mt.so","sharedlibrary",{ hello_builtin_p = hello_builtin_p,  hello_struct=C.hello_struct }, {"-L/opt/terra-Linux-x86_64-332a506/lib/", "-lluajit-5.1", "-lterra", "-lstdc++", "-lpthread" } )
+
+
+terralib.saveobj("hello-mt.so","sharedlibrary",{ hello_builtin_p = hello_builtin_p, init_lua = init_lua,  hello_struct=C.hello_struct, LU=LU }, {"-L/opt/terra-Linux-x86_64-332a506/lib/", "-lluajit-5.1", "-lterra", "-lstdc++", "-lpthread" } )
 
