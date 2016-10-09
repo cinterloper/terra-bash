@@ -2,7 +2,6 @@
 terralib.includepath = terralib.includepath..";/usr/include/bash/;/opt/terra-Linux-x86_64-332a506/include/"
 
 local C = terralib.includecstring([[
-#include <pthread.h>
 #include <config.h>
 #if defined (HAVE_UNISTD_H)
 #  include <unistd.h>
@@ -66,7 +65,7 @@ terra do_tstring(s: &int8)
   C.luaL_checknumber(LU.L,-1)   
 end
 
-terra terrabash_builtin_p(list : C.WORD_LIST)
+terra terrabash_builtin_p(list : &C.WORD_LIST)
   var cmd = list.word.word
   C.printf("word list: \n%s\n",cmd )
   init_terrabash()
