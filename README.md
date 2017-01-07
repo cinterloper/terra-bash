@@ -69,3 +69,4 @@ C.__SIZEOF_POINTER__
 C.__SIZE_WIDTH__
 C.crypto_stream_aes128ctr_beforenmbytes
 ```
+a great deal of the c and inspriration comes from https://github.com/masterkorp/LuaBash
