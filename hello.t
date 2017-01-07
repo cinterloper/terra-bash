@@ -19,3 +19,4 @@ end
 -- using LLVM to create machine code
 hello(0,nil)
 
+bash.call("echo"," hello bash terra")
