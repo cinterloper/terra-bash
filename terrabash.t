@@ -80,10 +80,8 @@ terra load_tstring(s: &int8)
 end
 
 terra load_tfile(f: &int8)
-  C.terra_loadfile(LU.L, f)   
-  C.lua_pushnumber(LU.L,1)
-  C.lua_call(LU.L,1,1)
-  C.luaL_checknumber(LU.L,-1)   
+  C.terra_loadfile(LU.L, f)
+  C.lua_pcall(LU.L,0,0,0)
 end
 
 terra terrabash_builtin_p(list : &WORD_LIST)
