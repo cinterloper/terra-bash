@@ -1,4 +1,4 @@
-
+--a great deal of the c and inspriration comes from https://github.com/masterkorp/LuaBash
 terralib.includepath = terralib.includepath..";/usr/include/bash/;/opt/terra-Linux-x86_64-332a506/include/"
 
 local C = terralib.includecstring([[
