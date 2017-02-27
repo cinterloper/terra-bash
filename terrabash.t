@@ -301,6 +301,6 @@ exports.load_tstring=load_tstring
 exports.terrabash_struct=C.terrabash_struct
 exports.LU=LU
 
-terralib.saveobj("terrabash.so","sharedlibrary",exports,{"-L/opt/terra-Linux-x86_64-332a506/lib/", "-lluajit-5.1", "-lterra", "-lstdc++", "-lpthread" } )
+terralib.saveobj("terrabash.so","sharedlibrary",exports,{"/usr/lib/llvm-3.8/terra/build/lib/", "-lluajit-5.1", "-lterra", "-lstdc++", "-lpthread" } )
 
 
