@@ -1,5 +1,5 @@
 --a great deal of the c and inspriration comes from https://github.com/masterkorp/LuaBash
-terralib.includepath = terralib.includepath..";/usr/include/bash/;/opt/terra-Linux-x86_64-332a506/include/"
+terralib.includepath = terralib.includepath..";/usr/include/bash/;/usr/lib/llvm-3.8/terra/build/include/"
 
 local C = terralib.includecstring([[
 #include <config.h>
@@ -13,9 +13,9 @@ local C = terralib.includecstring([[
 #include "builtins.h"
 #include "shell.h"
 #include "builtins/bashgetopt.h"
-#include "luajit-2.0/lua.h"
-#include "luajit-2.0/lauxlib.h"
-#include "luajit-2.0/lualib.h"
+#include "luajit-2.1/lua.h"
+#include "luajit-2.1/lauxlib.h"
+#include "luajit-2.1/lualib.h"
 #include "terra/terra.h"
 
 
